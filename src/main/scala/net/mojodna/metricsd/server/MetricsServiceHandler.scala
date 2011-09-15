@@ -1,4 +1,4 @@
-package metricsd.server
+package net.mojodna.metricsd.server
 
 import scala.math.round
 import com.codahale.logula.Logging

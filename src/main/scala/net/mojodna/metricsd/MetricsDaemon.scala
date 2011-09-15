@@ -5,7 +5,7 @@ import com.codahale.fig.Configuration
 import org.apache.log4j.Level
 import java.util.concurrent.TimeUnit
 import com.yammer.metrics.reporting.{GraphiteReporter, ConsoleReporter}
-import server.MetricsServer
+import net.mojodna.metricsd.server.MetricsServer
 
 class MetricsDaemon(config: Configuration) extends Logging {
   def apply() = {
