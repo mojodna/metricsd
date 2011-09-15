@@ -7,19 +7,22 @@ supports counters, histograms and meters.
 I should be drop-in compatible with Etsy's
 [statsd](https://github.com/etsy/statsd), although I add explicit support for
 meters with the `m` type and introduce the `h` (histogram) type as an alias for
-timers (`ms`).
-
-Meters are assumed to be per-second.
+timers (`ms`). I make heavy use of Coda Hale / Yammer's
+[Metrics](https://github.com/codahale/metrics) library for the JVM, including
+its ability to flush to Graphite.
 
 As with statsd, all values (excepting sample rate) are expected to be integers.
 Go forth and multiply.
 
+Meters are assumed to be per-second.
+
 Metrics will be published to Graphite in the form
 `metrics.{counter,histogram,meter}.<metric name>.<metric>`.
 
-I owe a great deal of gratitude to statsd (both Etsy's and Flickr's) and James
-Golick's [statsd.scala](https://github.com/jamesgolick/statsd.scala) for paving
-the way, in my protocol and structure respectively.
+In addition to the Metrics library, I owe a great deal of gratitude to statsd
+(both Etsy's and Flickr's) and James Golick's
+[statsd.scala](https://github.com/jamesgolick/statsd.scala) for paving the way,
+in my protocol and structure respectively.
 
 Metric Types
 ============
