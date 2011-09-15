@@ -13,7 +13,8 @@ libraryDependencies ++= Seq(
     "org.jboss.netty" % "netty" % "3.2.4.Final" withSources(),
     "com.codahale" %% "jerkson" % "0.4.1",
     "com.codahale" %% "logula" % "2.1.3" withSources(),
-    "com.codahale" %% "fig" % "1.1.7" withSources()
+    "com.codahale" %% "fig" % "1.1.7" withSources(),
+    "org.slf4j" % "slf4j-log4j12" % "1.6.2"
 )
 
 resolvers ++= Seq(
