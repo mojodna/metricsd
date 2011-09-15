@@ -21,3 +21,5 @@ resolvers ++= Seq(
     "Coda Hale's Repository" at "http://repo.codahale.com/",
     "JBoss Repo" at "https://repository.jboss.org/nexus/content/repositories/releases"
 )
+
+seq(sbtassembly.Plugin.assemblySettings: _*)
