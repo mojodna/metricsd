@@ -89,7 +89,7 @@ To run metricsd, execute the JAR:
 $ java -jar metricsd-assembly-0.1.0.jar
 ```
 
-If you with to provide a custom configuration:
+If you wish to provide a custom configuration:
 
 ```bash
 $ CONFIG=/path/to/config.json java -jar metricsd-assembly-0.1.0.jar
