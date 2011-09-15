@@ -46,10 +46,10 @@ object MetricsDaemon {
       log =>
         log.registerWithJMX = true
 
-        log.level = Level.toLevel(config("log.level").or("TRACE"))
+        log.level = Level.toLevel(config("log.level").or("INFO"))
 
         log.file.enabled = true
-        log.file.filename = config("log.file").or("log/development.log")
+        log.file.filename = config("log.file").or("log/metricsd.log")
         log.file.maxSize = 10 * 1024
         log.file.retainedFiles = 5
     }

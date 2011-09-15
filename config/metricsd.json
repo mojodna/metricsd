@@ -1,0 +1,13 @@
+// these are the default values; feel free to remove/change
+{
+    "debug": false,
+    "graphite": {
+        "flushInterval": 10,
+        "host": "localhost",
+        "port": 2003
+    },
+    "log": {
+        "level": "INFO",
+        "file": "log/metricsd.log"
+    }
+}
