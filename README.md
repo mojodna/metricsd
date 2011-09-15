@@ -27,6 +27,15 @@ Metric Types
 Metrics are collected by sending UDP messages to metricsd on port 8125 (or
 whatever you've overridden it to be).
 
+For testing purposes, you can use `netcat`:
+
+```bash
+echo "varietiesOfCheese:12|c" | nc -w 1 -u localhost 8125
+```
+
+When instrumenting your application, you'll probably want to use one of the
+statsd-compatible libraries.
+
 Counters
 --------
 
