@@ -26,6 +26,7 @@ class MetricsServiceHandler
 
     log.trace("Received message: %s", msg)
 
+    // TODO support multiple messages joined by newlines
     // parse message
     val MetricMatcher(_metricName, _, _, _value, _, _, _metricType, _, _sampleRate) = msg.trim
 
