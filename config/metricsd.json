@@ -9,5 +9,6 @@
     "log": {
         "level": "INFO",
         "file": "log/metricsd.log"
-    }
+    },
+    "port": 8125
 }
