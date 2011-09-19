@@ -1,9 +1,0 @@
-{
-    "debug": true,
-    "graphite": {
-        "host": "graphite.mojodna.net"
-    },
-    "log": {
-        "level": "DEBUG"
-    }
-}
