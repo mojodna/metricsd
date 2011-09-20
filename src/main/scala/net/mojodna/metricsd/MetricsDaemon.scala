@@ -25,6 +25,9 @@ class MetricsDaemon(config: Configuration) extends Logging {
       graphitePort
     )
 
+    // TODO bootstrap with counter metrics to avoid resets when the service
+    // restarts
+
     new MetricsServer(
       config("port").or(MetricsServer.DEFAULT_PORT)
     ).listen
