@@ -15,6 +15,7 @@ class MetricsServiceHandler
   extends SimpleChannelUpstreamHandler with Logging {
 
   val COUNTER_METRIC_TYPE = "c"
+  val GAUGE_METRIC_TYPE = "g"
   val HISTOGRAM_METRIC_TYPE = "h"
   val METER_METRIC_TYPE = "m"
   val TIMER_METRIC_TYPE = "ms"
@@ -58,6 +59,13 @@ class MetricsServiceHandler
           case COUNTER_METRIC_TYPE =>
             log.debug("Incrementing counter '%s' with %d at sample rate %f (%d)", metricName, value, sampleRate, round(value * 1 / sampleRate))
             Metrics.newCounter(new MetricName("metrics", "counter", metricName)).inc(round(value * 1 / sampleRate))
+
+          case GAUGE_METRIC_TYPE =>
+            log.debug("Updating gauge '%s' with %d", metricName, value)
+            // use a counter to simulate a gauge
+            val counter = Metrics.newCounter(new MetricName("metrics", "gauge", metricName))
+            counter.clear
+            counter.inc(value)
 
           case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
             log.debug("Updating histogram '%s' with %d", metricName, value)

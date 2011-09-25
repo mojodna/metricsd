@@ -44,11 +44,11 @@ statsd-compatible libraries.
 Counters
 --------
 
-Counters are updated by sending messages of the form:
+Counters are incremented/decremented by sending messages of the form:
 
     <metric name>:<value>|c
 
-For example:
+For example, to add 12 varieties to the "varietiesOfCheese" metric:
 
     varietiesOfCheese:12|c
 
@@ -56,6 +56,24 @@ Counters may be updated at a lower sample rate; to do so, add `|@<sample
 rate>`, e.g.:
 
     varietiesOfCheese:3|c|@0.25
+
+_N.B._: Counters are currently reset when `metricsd` starts up. If you need
+long-term historical values, you should use a gauge instead.
+
+Gauges
+------
+
+Gauges are updated by sending messages of the form:
+
+    <metric name>:<value>|g
+
+For example, to set the current value for "varietiesOfCheese":
+
+    varietiesOfCheese:27|g
+
+As gauges do not have base their current value on previous values, they are
+more appropriate for storing metrics in a durable fashion (i.e. not susceptible
+to `metricsd` restarting).
 
 Histograms
 ----------
