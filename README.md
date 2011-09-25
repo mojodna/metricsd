@@ -33,7 +33,7 @@ whatever you've overridden it to be).
 For testing purposes, you can use `netcat`:
 
 ```bash
-echo "varietiesOfCheese:12|c" | nc -w 1 -u localhost 8125
+echo "varietiesOfCheese:12|c" | nc -w 0 -u localhost 8125
 ```
 
 When instrumenting your application, you'll probably want to use one of the
