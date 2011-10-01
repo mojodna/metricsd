@@ -89,6 +89,11 @@ For example:
 Again, values must be integers, so use a data-appropriate scale (e.g.
 milliseconds).
 
+_N.B._: Histograms will be reset (samples will be cleared) when `metricsd`
+restarts. Biased (`ExponentiallyDecayingSample(1028, 0.015)`, Metrics'
+`HistogramMetric.SampleType.BIASED`, biasing the sample to the last 5 minutes)
+histograms are used to mitigate the impact of this.
+
 Meters
 ------
 
