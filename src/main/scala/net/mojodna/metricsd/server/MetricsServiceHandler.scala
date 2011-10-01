@@ -70,7 +70,7 @@ class MetricsServiceHandler
           case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
             log.debug("Updating histogram '%s' with %d", metricName, value)
             // note: assumes that values have been normalized to integers
-            Metrics.newHistogram(new MetricName("metrics", "histogram", metricName)).update(value)
+            Metrics.newHistogram(new MetricName("metrics", "histogram", metricName), true).update(value)
 
           case METER_METRIC_TYPE =>
             log.debug("Marking meter '%s'", metricName)
