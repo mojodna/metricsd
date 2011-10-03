@@ -1,1 +1,1 @@
-libraryDependencies <+= (sbtVersion) { sv => "com.eed3si9n" %% "sbt-assembly" % ("sbt" + sv + "_0.6") }
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.7.0")
