@@ -87,8 +87,5 @@ class MetricsServiceHandler
 
   override def exceptionCaught(ctx: ChannelHandlerContext, e: ExceptionEvent) = {
     log.error(e.getCause, "Exception in MetricsServiceHandler", e)
-
-    // close the channel that caused the exception
-    e.getChannel.close
   }
 }
