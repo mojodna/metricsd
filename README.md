@@ -19,7 +19,7 @@ Meters are assumed to be per-second.
 Metrics will be published to Graphite in the form
 `metrics.{counter,histogram,meter}.<metric name>.<metric>`. Multiple metrics
 may be published by joining messages together with newlines (as with
-[statsite](https://github.com/kiip/statsite).
+[statsite](https://github.com/kiip/statsite)).
 
 In addition to the Metrics library, I owe a great deal of gratitude to statsd
 (both Etsy's and Flickr's) and James Golick's
