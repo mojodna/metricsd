@@ -1,5 +1,5 @@
-v0.2.2
-======
+v0.2.2: Oct 17 2011
+===================
 
 * Update to SBT 0.11.0
 * Bugfix: Exceptions parsing metric strings kill the server
