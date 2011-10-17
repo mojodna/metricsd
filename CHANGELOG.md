@@ -3,6 +3,7 @@ v0.2.2
 
 * Update to SBT 0.11.0
 * Bugfix: Exceptions parsing metric strings kill the server
+* Updated dependencies
 
 v0.2.1: Oct 1 2011
 ==================
