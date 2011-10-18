@@ -6,10 +6,10 @@ supports counters, histograms and meters.
 
 I should be drop-in compatible with Etsy's
 [statsd](https://github.com/etsy/statsd), although I add explicit support for
-meters with the `m` type and introduce the `h` (histogram) type as an alias for
-timers (`ms`). I make heavy use of Coda Hale / Yammer's
-[Metrics](https://github.com/codahale/metrics) library for the JVM, including
-its ability to flush to Graphite.
+meters (with the `m` type) and gauges (with the `g` type) and introduce the `h`
+(histogram) type as an alias for timers (`ms`). I make heavy use of Coda Hale
+/ Yammer's [Metrics](https://github.com/codahale/metrics) library for the JVM,
+including its ability to flush to Graphite.
 
 As with statsd, all values (excepting sample rate) are expected to be integers.
 Go forth and multiply.
