@@ -105,6 +105,31 @@ For example:
 
     userDidSignIn
 
+Deleting Metrics
+================
+
+From time to time you may submit erroneous metrics or find that you're no
+longer interesting in tracking older metrics. Rather than restarting the server
+to clear `metricsd`'s memory of them (and losing the state of your counters),
+you can send additional messages to delete them:
+
+    <metric name>:delete|<metric type>
+
+For example, to delete a typo'd `repsonseTime` histogram:
+
+    repsonseTime:delete|h
+
+This can also be done from the command line:
+
+```bash
+echo "repsonseTime:delete|h" | nc -w 0 -u localhost 8125
+```
+
+Listing known metrics is still a `TODO`, but you can get a clue about what
+metrics are being logged either by `tail`ing the `carbon-cache` log on your
+Graphite server or by manually looking through the available metrics in its web
+interface.
+
 Running
 =======
 

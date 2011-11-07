@@ -20,22 +20,22 @@ class MetricsServiceHandler
   val METER_METRIC_TYPE = "m"
   val TIMER_METRIC_TYPE = "ms"
 
-  val MetricMatcher = new Regex("""([^:]+)(:((\d+)?(\|((\w+)(\|@(\d+\.\d+))?)?)?)?)?""")
+  val MetricMatcher = new Regex("""([^:]+)(:((\d+|delete)?(\|((\w+)(\|@(\d+\.\d+))?)?)?)?)?""")
 
-  override def messageReceived(ctx: ChannelHandlerContext, e: MessageEvent) = {
+  override def messageReceived(ctx: ChannelHandlerContext, e: MessageEvent) {
     val msg = e.getMessage.asInstanceOf[String]
 
     log.trace("Received message: %s", msg)
 
     msg.trim.split("\n").foreach {
       line: String =>
-      // parse message
+        // parse message
         val MetricMatcher(_metricName, _, _, _value, _, _, _metricType, _, _sampleRate) = line
 
         // clean up the metric name
         val metricName = _metricName.replaceAll("\\s+", "_").replaceAll("\\/", "-").replaceAll("[^a-zA-Z_\\-0-9\\.]", "")
 
-        val metricType = if (_value == null) {
+        val metricType = if ((_value == null || _value.equals("delete")) && _metricType == null) {
           METER_METRIC_TYPE
         } else if (_metricType == null) {
           COUNTER_METRIC_TYPE
@@ -43,11 +43,13 @@ class MetricsServiceHandler
           _metricType
         }
 
-        val value: Long = if (_value != null) {
+        val value: Long = if (_value != null && !_value.equals("delete")) {
           _value.toLong
         } else {
           1 // meaningless value
         }
+
+        val deleteMetric = (_value != null && _value.equals("delete"))
 
         val sampleRate: Double = if (_sampleRate != null) {
           _sampleRate.toDouble
@@ -55,37 +57,55 @@ class MetricsServiceHandler
           1.0
         }
 
-        metricType match {
-          case COUNTER_METRIC_TYPE =>
-            log.debug("Incrementing counter '%s' with %d at sample rate %f (%d)", metricName, value, sampleRate, round(value * 1 / sampleRate))
-            Metrics.newCounter(new MetricName("metrics", "counter", metricName)).inc(round(value * 1 / sampleRate))
+        if (deleteMetric) {
+          val name: MetricName = metricType match {
+            case COUNTER_METRIC_TYPE =>
+              new MetricName("metrics", "counter", metricName)
 
-          case GAUGE_METRIC_TYPE =>
-            log.debug("Updating gauge '%s' with %d", metricName, value)
-            // use a counter to simulate a gauge
-            val counter = Metrics.newCounter(new MetricName("metrics", "gauge", metricName))
-            counter.clear
-            counter.inc(value)
+            case GAUGE_METRIC_TYPE =>
+              new MetricName("metrics", "gauge", metricName)
 
-          case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
-            log.debug("Updating histogram '%s' with %d", metricName, value)
-            // note: assumes that values have been normalized to integers
-            Metrics.newHistogram(new MetricName("metrics", "histogram", metricName), true).update(value)
+            case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
+              new MetricName("metrics", "histogram", metricName)
 
-          case METER_METRIC_TYPE =>
-            log.debug("Marking meter '%s'", metricName)
-            Metrics.newMeter(new MetricName("metrics", "meter", metricName), "samples", TimeUnit.SECONDS).mark
+            case METER_METRIC_TYPE =>
+              new MetricName("metrics", "meter", metricName)
+          }
 
-          case x: String =>
-            log.error("Unknown metric type: %s", x)
+          log.debug("Deleting metric '%s'", name)
+          Metrics.defaultRegistry.removeMetric(name)
+        } else {
+          metricType match {
+            case COUNTER_METRIC_TYPE =>
+              log.debug("Incrementing counter '%s' with %d at sample rate %f (%d)", metricName, value, sampleRate, round(value * 1 / sampleRate))
+              Metrics.newCounter(new MetricName("metrics", "counter", metricName)).inc(round(value * 1 / sampleRate))
+
+            case GAUGE_METRIC_TYPE =>
+              log.debug("Updating gauge '%s' with %d", metricName, value)
+              // use a counter to simulate a gauge
+              val counter = Metrics.newCounter(new MetricName("metrics", "gauge", metricName))
+              counter.clear()
+              counter.inc(value)
+
+            case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
+              log.debug("Updating histogram '%s' with %d", metricName, value)
+              // note: assumes that values have been normalized to integers
+              Metrics.newHistogram(new MetricName("metrics", "histogram", metricName), true).update(value)
+
+            case METER_METRIC_TYPE =>
+              log.debug("Marking meter '%s'", metricName)
+              Metrics.newMeter(new MetricName("metrics", "meter", metricName), "samples", TimeUnit.SECONDS).mark()
+
+            case x: String =>
+              log.error("Unknown metric type: %s", x)
+          }
+
+          Metrics.newMeter(new MetricName("metricsd", "meter", "samples"), "samples", TimeUnit.SECONDS).mark()
         }
-
-        Metrics.newMeter(new MetricName("metricsd", "meter", "samples"), "samples", TimeUnit.SECONDS).mark
-
     }
   }
 
-  override def exceptionCaught(ctx: ChannelHandlerContext, e: ExceptionEvent) = {
+  override def exceptionCaught(ctx: ChannelHandlerContext, e: ExceptionEvent) {
     log.error(e.getCause, "Exception in MetricsServiceHandler", e)
   }
 }
