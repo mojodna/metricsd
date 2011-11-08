@@ -1,4 +1,4 @@
-v0.3.0
+v0.3.0: Nov 7 2011
 ==================
 
 * Support for metric deletion
