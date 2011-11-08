@@ -1,3 +1,9 @@
+v0.3.0
+==================
+
+* Support for metric deletion
+* Updated dependencies
+
 v0.2.2: Oct 17 2011
 ===================
 
