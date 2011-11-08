@@ -136,13 +136,13 @@ Running
 To run metricsd, execute the JAR:
 
 ```bash
-$ java -jar metricsd-assembly-0.1.0.jar
+$ java -jar metricsd-assembly-<version>.jar
 ```
 
 If you wish to provide a custom configuration:
 
 ```bash
-$ CONFIG=/path/to/config.json java -jar metricsd-assembly-0.1.0.jar
+$ CONFIG=/path/to/config.json java -jar metricsd-assembly-<version>.jar
 ```
 
 Configuration
@@ -177,7 +177,7 @@ Build Requirements
 ------------------
 
 * Scala 2.9.1
-* SBT 0.10.x
+* SBT 0.11.x
 
 Begin by installing [Scala](http://www.scala-lang.org/) and
 [SBT](https://github.com/harrah/xsbt) according to the relevant instructions
