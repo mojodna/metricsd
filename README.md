@@ -125,10 +125,51 @@ This can also be done from the command line:
 echo "repsonseTime:delete|h" | nc -w 0 -u localhost 8125
 ```
 
-Listing known metrics is still a `TODO`, but you can get a clue about what
-metrics are being logged either by `tail`ing the `carbon-cache` log on your
-Graphite server or by manually looking through the available metrics in its web
-interface.
+Management
+==========
+
+metricsd provides a simple, text-based interface (telnet-like) interface to obtain
+information about known metrics.  This interface runs on a separate port (*8126* by
+default).
+
+The following commands are supported: 
+
+- *help* - Provides a list of known commands
+- *counters* - Lists known counters
+- *gauges* - Lists known gauges
+- *histograms* - Lists known histograms
+- *meters* - Lists known meters
+- *quit* - Closes the connection
+
+Each command should be followed by a newline to execute.
+
+For the commands that list metrics, each metric name will be followed by a newline
+and the list itself will be terminated by *END* with two newlines following.
+
+```bash
+echo "varietiesOfCheese:1|c" | nc -w 0 -u localhost 8125
+echo "varietiesOfMice:2|c" | nc -w 0 -u localhost 8125
+echo "cheeseEaten:2|h" | nc -w 0 -u localhost 8125
+
+$ telnet localhost 8126
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+counters
+varietiesOfMice
+varietiesOfCheese
+END
+
+histograms
+cheeseEaten
+END
+
+gauges 
+END
+
+quit
+Connection closed by foreign host.
+```
 
 Running
 =======
@@ -163,7 +204,8 @@ Configuration is done by providing the path to a JSON file similar to
         "level": "INFO",
         "file": "log/metricsd.log"
     },
-    "port": 8125
+    "port": 8125,
+    "management_port": 8126
 }
 ```
 

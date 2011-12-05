@@ -10,5 +10,6 @@
         "level": "INFO",
         "file": "log/metricsd.log"
     },
-    "port": 8125
+    "port": 8125,
+    "management_port": 8126
 }
