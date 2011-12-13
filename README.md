@@ -219,16 +219,16 @@ Build Requirements
 ------------------
 
 * Scala 2.9.1
-* SBT 0.11.x
+* Maven 3.0.x
 
 Begin by installing [Scala](http://www.scala-lang.org/) and
-[SBT](https://github.com/harrah/xsbt) according to the relevant instructions
+[Maven](http://maven.apache.org) according to the relevant instructions
 for your system.
 
 To build an assembly (an executable JAR file containing all dependencies):
 
 ```bash
-$ sbt assembly
+$ mvn package
 ```
 
 License
