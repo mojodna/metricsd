@@ -177,13 +177,13 @@ Running
 To run metricsd, execute the JAR:
 
 ```bash
-$ java -jar metricsd-assembly-<version>.jar
+$ java -jar metricsd-<version>-jar-with-dependencies.jar
 ```
 
 If you wish to provide a custom configuration:
 
 ```bash
-$ CONFIG=/path/to/config.json java -jar metricsd-assembly-<version>.jar
+$ CONFIG=/path/to/config.json java -jar metricsd-<version>-jar-with-dependencies.jar
 ```
 
 Configuration
@@ -225,7 +225,7 @@ Begin by installing [Scala](http://www.scala-lang.org/) and
 [Maven](http://maven.apache.org) according to the relevant instructions
 for your system.
 
-To build an assembly (an executable JAR file containing all dependencies):
+To build an packaged JAR containing dependencies:
 
 ```bash
 $ mvn package
