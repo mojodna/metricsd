@@ -25,16 +25,16 @@ class ManagementServiceHandler
       case HELP =>
         e.getChannel.write("COMMANDS: counters, gauges, histograms, meters, quit\n\n")
       case COUNTERS =>
-        for((metricName, metric) <- Metrics.allMetrics if metricName.getType == "counter") e.getChannel.write(metricName.getName + "\n")
+        for((metricName, metric) <- Metrics.defaultRegistry.allMetrics if metricName.getType == "counter") e.getChannel.write(metricName.getName + "\n")
         e.getChannel.write("END\n\n")
       case GAUGES =>
-        for((metricName, metric) <- Metrics.allMetrics if metricName.getType == "gauge") e.getChannel.write(metricName.getName + "\n")
+        for((metricName, metric) <- Metrics.defaultRegistry.allMetrics if metricName.getType == "gauge") e.getChannel.write(metricName.getName + "\n")
         e.getChannel.write("END\n\n")
       case HISTOGRAMS =>
-        for((metricName, metric) <- Metrics.allMetrics if metricName.getType == "histogram") e.getChannel.write(metricName.getName + "\n")
+        for((metricName, metric) <- Metrics.defaultRegistry.allMetrics if metricName.getType == "histogram") e.getChannel.write(metricName.getName + "\n")
         e.getChannel.write("END\n\n")
       case METERS =>
-        for((metricName, metric) <- Metrics.allMetrics if metricName.getType == "meter") e.getChannel.write(metricName.getName + "\n")
+        for((metricName, metric) <- Metrics.defaultRegistry.allMetrics if metricName.getType == "meter") e.getChannel.write(metricName.getName + "\n")
         e.getChannel.write("END\n\n")
       case QUIT =>
         e.getChannel.close
