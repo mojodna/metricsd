@@ -1,5 +1,5 @@
-v0.4.0
-======
+v0.4.0: Jan 10 2012
+===================
 
 * Metric management (listing, etc.) interface (Brian McKinney)
 * Switch to Maven for dependency management (Ian Eure)
