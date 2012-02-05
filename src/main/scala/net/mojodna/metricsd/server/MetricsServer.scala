@@ -1,19 +1,22 @@
 package net.mojodna.metricsd.server
 
-import org.jboss.netty.channel.socket.nio.NioDatagramChannelFactory
 import java.util.concurrent.Executors
-import org.jboss.netty.bootstrap.ConnectionlessBootstrap
 import org.jboss.netty.util.CharsetUtil
 import org.jboss.netty.handler.codec.string.{StringDecoder, StringEncoder}
 import org.jboss.netty.channel.{FixedReceiveBufferSizePredictorFactory, Channels, ChannelPipeline, ChannelPipelineFactory}
 import com.codahale.logula.Logging
 import java.net.InetSocketAddress
+import org.jboss.netty.bootstrap.{ServerBootstrap, ConnectionlessBootstrap}
+import org.jboss.netty.channel.socket.nio.{NioServerSocketChannelFactory, NioDatagramChannelFactory}
 
 class MetricsServer(port: Int) extends Logging {
   def listen = {
-    val f = new NioDatagramChannelFactory(Executors.newCachedThreadPool)
-
-    val b = new ConnectionlessBootstrap(f)
+    val b = new ServerBootstrap(
+      new NioServerSocketChannelFactory(
+        Executors.newCachedThreadPool,
+        Executors.newCachedThreadPool
+      )
+    )
 
     // Configure the pipeline factory.
     b.setPipelineFactory(new ChannelPipelineFactory {
@@ -25,10 +28,6 @@ class MetricsServer(port: Int) extends Logging {
         )
       }
     })
-
-    b.setOption("broadcast", "false")
-
-    b.setOption("receiveBufferSizePredictorFactory", new FixedReceiveBufferSizePredictorFactory(1024))
 
     log.info("Listening on port %d.", port)
     b.bind(new InetSocketAddress(port))

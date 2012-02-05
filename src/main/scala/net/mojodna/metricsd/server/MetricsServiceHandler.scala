@@ -103,9 +103,11 @@ class MetricsServiceHandler
           Metrics.newMeter(new MetricName("metricsd", "meter", "samples"), "samples", TimeUnit.SECONDS).mark()
         }
     }
+    e.getChannel.write("ok")
   }
 
   override def exceptionCaught(ctx: ChannelHandlerContext, e: ExceptionEvent) {
     log.error(e.getCause, "Exception in MetricsServiceHandler", e)
+    e.getChannel.close
   }
 }
