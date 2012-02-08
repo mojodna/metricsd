@@ -1,3 +1,9 @@
+v0.4.1: Feb 7 2012
+==================
+
+* Updated dependencies (metrics-graphite no longer sends invalid messages to
+  carbon-cache)
+
 v0.4.0: Jan 10 2012
 ===================
 
