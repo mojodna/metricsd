@@ -20,7 +20,7 @@ class MetricsServiceHandler
   val METER_METRIC_TYPE = "m"
   val TIMER_METRIC_TYPE = "ms"
 
-  val MetricMatcher = new Regex("""([^:]+)(:((\d+|delete)?(\|((\w+)(\|@(\d+\.\d+))?)?)?)?)?""")
+  val MetricMatcher = new Regex("""([^:]+)(:((-?\d+|delete)?(\|((\w+)(\|@(\d+\.\d+))?)?)?)?)?""")
 
   override def messageReceived(ctx: ChannelHandlerContext, e: MessageEvent) {
     val msg = e.getMessage.asInstanceOf[String]

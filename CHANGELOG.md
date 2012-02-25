@@ -2,6 +2,7 @@ v0.4.2
 ======
 
 * Updated dependencies
+* Handle negative numbers (!)
 
 v0.4.1: Feb 7 2012
 ==================
