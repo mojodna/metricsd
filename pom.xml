@@ -19,14 +19,22 @@
     </developers>
 
     <repositories>
+	    <repository>
+             <id>ds-master</id>
+             <url>http://nexus.ds.chalybs.net/content/groups/master</url>
+        </repository>
         <repository>
+		    <id>repo.codahale.com</id>
+		    <url>http://repo.codahale.com</url>
+		  </repository>
+        <!--repository>
             <id>scala-tools-releases</id>
-            <url>http://scala-tools.org/repo-releases/</url>
+            <url>http://scala-tools.org/repo-releases</url>
         </repository>
         <repository>
             <id>repo.codahale.com</id>
             <url>http://repo.codahale.com</url>
-        </repository>
+        </repository-->
         <repository>
             <id>jboss</id>
             <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
@@ -34,6 +42,10 @@
     </repositories>
 
     <pluginRepositories>
+	    <pluginRepository>
+                <id>ds-master</id>
+                <url>http://nexus.ds.chalybs.net/content/groups/master</url>
+        </pluginRepository>
         <pluginRepository>
             <id>scala-tools-releases</id>
             <url>http://scala-tools.org/repo-releases/</url>
@@ -49,17 +61,17 @@
         <dependency>
             <groupId>com.yammer.metrics</groupId>
             <artifactId>metrics-core</artifactId>
-            <version>2.0.3</version>
+            <version>3.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.yammer.metrics</groupId>
             <artifactId>metrics-graphite</artifactId>
-            <version>2.0.3</version>
+            <version>3.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.yammer.metrics</groupId>
             <artifactId>metrics-scala_${scala.version}</artifactId>
-            <version>2.0.3</version>
+            <version>3.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
