@@ -83,9 +83,11 @@ class MetricsServiceHandler
             case GAUGE_METRIC_TYPE =>
               log.debug("Updating gauge '%s' with %d", metricName, value)
               // use a counter to simulate a gauge
-              val counter = Metrics.newCounter(new MetricName("metrics", "gauge", metricName))
-              counter.clear()
-              counter.inc(value)
+              //val counter = Metrics.newCounter(new MetricName("metrics", "gauge", metricName))
+              //counter.clear()
+              //counter.inc(value)
+			 // Change it to use the Metrics.newGauge API. By Yongjun Rong
+			 Metrics.newGauge(new MetricName("metrics", "gauge", metricName),value);
 
             case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
               log.debug("Updating histogram '%s' with %d", metricName, value)
