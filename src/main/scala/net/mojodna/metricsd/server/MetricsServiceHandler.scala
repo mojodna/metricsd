@@ -7,6 +7,9 @@ import com.yammer.metrics.core.MetricName
 import java.util.concurrent.TimeUnit
 import com.yammer.metrics.Metrics
 import util.matching.Regex
+import java.io.IOException
+import java.net.InetAddress
+import java.net.UnknownHostException
 
 /**
  * A service handler for :-delimited metrics strings (à la Etsy's statsd).
@@ -18,9 +21,34 @@ class MetricsServiceHandler
   val GAUGE_METRIC_TYPE = "g"
   val HISTOGRAM_METRIC_TYPE = "h"
   val METER_METRIC_TYPE = "m"
+  val METER_VALUE_METRIC_TYPE = "mn"
   val TIMER_METRIC_TYPE = "ms"
 
   val MetricMatcher = new Regex("""([^:]+)(:((-?\d+|delete)?(\|((\w+)(\|@(\d+\.\d+))?)?)?)?)?""")
+  var  hostValue="UNKNOWN"
+ 		try
+ 		{
+ 			val addr = InetAddress.getLocalHost()
+
+ 			// Get IP Address
+ 			val ipAddr = addr.getAddress()
+
+ 			// Get hostname
+ 			val hostpath = addr.getHostName().split( "[.]" )
+ 			if ( hostpath.length >= 2 )
+ 			{
+ 				hostValue = hostpath( 1 ) +"."+ hostpath( 0 )
+ 			}
+ 			else
+ 			{
+ 				hostValue = hostpath( 0 )
+ 			}
+ 		}
+ 		catch
+ 		{
+ 		    case ukh: UnknownHostException =>
+ 		        log.trace("couldn't find host",ukh)
+ 		}
 
   override def messageReceived(ctx: ChannelHandlerContext, e: MessageEvent) {
     val msg = e.getMessage.asInstanceOf[String]
@@ -70,6 +98,9 @@ class MetricsServiceHandler
 
             case METER_METRIC_TYPE =>
               new MetricName("metrics", "meter", metricName)
+
+            case METER_VALUE_METRIC_TYPE =>
+              new MetricName("metrics", "meter", metricName)
           }
 
           log.debug("Deleting metric '%s'", name)
@@ -96,11 +127,15 @@ class MetricsServiceHandler
               log.debug("Marking meter '%s'", metricName)
               Metrics.newMeter(new MetricName("metrics", "meter", metricName), "samples", TimeUnit.SECONDS).mark()
 
+            case METER_VALUE_METRIC_TYPE =>
+              log.debug("Marking meter '%s'", metricName)
+              Metrics.newMeter(new MetricName("metrics", "meter", metricName), "samples", TimeUnit.SECONDS).mark(value)
+
             case x: String =>
               log.error("Unknown metric type: %s", x)
           }
 
-          Metrics.newMeter(new MetricName("metricsd", "meter", "samples"), "samples", TimeUnit.SECONDS).mark()
+          Metrics.newMeter(new MetricName("metricsd."+hostValue, "meter", "samples"), "samples", TimeUnit.SECONDS).mark()
         }
     }
   }
