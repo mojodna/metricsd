@@ -18,6 +18,7 @@ class MetricsServiceHandler
   val GAUGE_METRIC_TYPE = "g"
   val HISTOGRAM_METRIC_TYPE = "h"
   val METER_METRIC_TYPE = "m"
+  val METER_VALUE_METRIC_TYPE = "mn"
   val TIMER_METRIC_TYPE = "ms"
 
   val MetricMatcher = new Regex("""([^:]+)(:((-?\d+|delete)?(\|((\w+)(\|@(\d+\.\d+))?)?)?)?)?""")
@@ -68,7 +69,7 @@ class MetricsServiceHandler
             case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
               new MetricName("metrics", "histogram", metricName)
 
-            case METER_METRIC_TYPE =>
+            case METER_METRIC_TYPE | METER_VALUE_METRIC_TYPE =>
               new MetricName("metrics", "meter", metricName)
           }
 
@@ -95,6 +96,10 @@ class MetricsServiceHandler
             case METER_METRIC_TYPE =>
               log.debug("Marking meter '%s'", metricName)
               Metrics.newMeter(new MetricName("metrics", "meter", metricName), "samples", TimeUnit.SECONDS).mark()
+
+            case METER_VALUE_METRIC_TYPE =>
+              log.debug("Marking meter '%s' with %d", metricName, value)
+              Metrics.newMeter(new MetricName("metrics", "meter", metricName), "samples", TimeUnit.SECONDS).mark(value)
 
             case x: String =>
               log.error("Unknown metric type: %s", x)
