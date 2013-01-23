@@ -205,7 +205,8 @@ Configuration is done by providing the path to a JSON file similar to
         "file": "log/metricsd.log"
     },
     "port": 8125,
-    "management_port": 8126
+    "prefix": "metricsd",
+    "managementPort": 8126
 }
 ```
 
