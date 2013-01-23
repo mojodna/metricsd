@@ -33,7 +33,7 @@ class MetricsDaemon(config: Configuration) extends Logging {
     ).listen
 
     new ManagementServer(
-      config("management_port").or(ManagementServer.DEFAULT_PORT)
+      config("managementPort").or(config("management_port").or(ManagementServer.DEFAULT_PORT))
     ).listen
   }
 }
