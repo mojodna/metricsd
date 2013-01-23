@@ -1,5 +1,6 @@
 package net.mojodna.metricsd.server
 
+import net.mojodna.metricsd.server.MetricsServiceHandler
 import org.jboss.netty.channel.socket.nio.NioDatagramChannelFactory
 import java.util.concurrent.Executors
 import org.jboss.netty.bootstrap.ConnectionlessBootstrap
