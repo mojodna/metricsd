@@ -11,7 +11,7 @@ import util.matching.Regex
 /**
  * A service handler for :-delimited metrics strings (à la Etsy's statsd).
  */
-class MetricsServiceHandler
+class MetricsServiceHandler(prefix: String)
   extends SimpleChannelUpstreamHandler with Logging {
 
   val COUNTER_METRIC_TYPE = "c"
@@ -105,7 +105,7 @@ class MetricsServiceHandler
               log.error("Unknown metric type: %s", x)
           }
 
-          Metrics.newMeter(new MetricName("metricsd", "meter", "samples"), "samples", TimeUnit.SECONDS).mark()
+          Metrics.newMeter(new MetricName(prefix, "meter", "samples"), "samples", TimeUnit.SECONDS).mark()
         }
     }
   }

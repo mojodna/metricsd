@@ -9,7 +9,7 @@ import org.jboss.netty.channel.{FixedReceiveBufferSizePredictorFactory, Channels
 import com.codahale.logula.Logging
 import java.net.InetSocketAddress
 
-class MetricsServer(port: Int) extends Logging {
+class MetricsServer(port: Int, prefix: String) extends Logging {
   def listen = {
     val f = new NioDatagramChannelFactory(Executors.newCachedThreadPool)
 
@@ -21,7 +21,7 @@ class MetricsServer(port: Int) extends Logging {
         Channels.pipeline(
           new StringEncoder(CharsetUtil.UTF_8),
           new StringDecoder(CharsetUtil.UTF_8),
-          new MetricsServiceHandler
+          new MetricsServiceHandler(prefix)
         )
       }
     })

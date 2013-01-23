@@ -4,6 +4,7 @@ v0.5.0
 * Allow values to be provided to meters (Pierce Wetter)
 * Updated dependencies
 * Renamed `management_port` to `managementPort` for consistency (don't worry: it's backward-compatible)
+* Configurable `prefix` setting (defaults to `metricsd`).
 
 v0.4.2: Feb 24 2012
 ===================

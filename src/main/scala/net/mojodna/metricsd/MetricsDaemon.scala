@@ -29,7 +29,8 @@ class MetricsDaemon(config: Configuration) extends Logging {
     // restarts
 
     new MetricsServer(
-      config("port").or(MetricsServer.DEFAULT_PORT)
+      config("port").or(MetricsServer.DEFAULT_PORT),
+      config("prefix").or("metricsd")
     ).listen
 
     new ManagementServer(
