@@ -44,7 +44,7 @@ object MetricsDaemon {
     val configFile = Option(System.getenv.get("CONFIG"))
 
     val config = if (configFile == None) {
-      System.err.println("Set CONFIG=/path/to/config to use custom settings.")
+      System.err.println("Set CONFIG=/path/to/config.json to use custom settings.")
       new Configuration(scala.io.Source.fromString("{}"))
     } else {
       new Configuration(configFile.get)
