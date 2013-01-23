@@ -1,7 +1,6 @@
 package net.mojodna.metricsd.server
 
 import java.util.concurrent.Executors
-import net.mojodna.metricsd.server.ManagementServiceHandler
 import org.jboss.netty.bootstrap.ServerBootstrap
 import org.jboss.netty.util.CharsetUtil
 import org.jboss.netty.handler.codec.string.{StringDecoder, StringEncoder}
