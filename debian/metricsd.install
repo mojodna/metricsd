@@ -1,0 +1,3 @@
+metricsd.jar usr/share/metricsd
+debian/metricsd.conf etc/init
+debian/metricsd.json etc

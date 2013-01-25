@@ -1,0 +1,21 @@
+Source: metricsd
+Section: misc
+Priority: optional
+Maintainer: Seth Fitzsimmons <seth@mojodna.net>
+Build-Depends: debhelper (>= 8), openjdk-7-jdk, javahelper (>= 0.43ubuntu2), maven
+Standards-Version: 3.9.3
+Homepage: https://github.com/mojodna/metricsd
+
+Package: metricsd
+Architecture: all
+Depends: ${java:Depends}, ${misc:Depends}
+Recommends: ${java:Recommends}
+Description: A metrics aggregator for Graphite
+ I am a metrics aggregator for Graphite that supports counters, histograms and
+ meters.
+ .
+ I should be drop-in compatible with Etsy's statsd, although I add explicit
+ support for meters (with the m type) and gauges (with the g type) and
+ introduce the h (histogram) type as an alias for timers (ms). I make heavy use
+ of Coda Hale / Yammer's Metrics library for the JVM, including its ability to
+ flush to Graphite.

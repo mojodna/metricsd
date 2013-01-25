@@ -3,3 +3,6 @@ project/boot
 project/target
 dist
 log
+debian/metricsd
+debian/metricsd.debhelper.log
+metricsd.jar

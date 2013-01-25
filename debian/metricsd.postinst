@@ -1,0 +1,2 @@
+chown nobody:nogroup /var/log/metricsd
+update-rc.d metricsd defaults
