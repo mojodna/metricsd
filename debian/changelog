@@ -1,3 +1,21 @@
+metricsd (0.5.0-4) quantal; urgency=low
+
+  * No changes.
+
+ -- Seth Fitzsimmons <seth@mojodna.net>  Fri, 25 Jan 2013 14:37:08 -0800
+
+metricsd (0.5.0-3) unstable; urgency=low
+
+  * No changes.
+
+ -- Seth Fitzsimmons <seth@mojodna.net>  Fri, 25 Jan 2013 14:30:47 -0800
+
+metricsd (0.5.0-2) unstable; urgency=low
+
+  * No changes.
+
+ -- Seth Fitzsimmons <seth@mojodna.net>  Fri, 25 Jan 2013 14:24:15 -0800
+
 metricsd (0.5.0-1) unstable; urgency=low
 
   * Initial release.

@@ -1,3 +1,0 @@
-java:Depends=default-jre | java6-runtime | java7-runtime , jarwrapper (>=0.5)
-java:Recommends=
-misc:Depends=
