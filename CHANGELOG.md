@@ -1,5 +1,5 @@
-v0.5.0
-======
+v0.5.0: Jan 24 2013
+===================
 
 * Allow values to be provided to meters (Pierce Wetter)
 * Updated dependencies
