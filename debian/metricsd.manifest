@@ -1,3 +1,0 @@
-usr/share/metricsd/metricsd.jar:
- Main-Class: net.mojodna.metricsd.MetricsDaemon
- Debian-Java-Home: /usr/lib/jvm/default-java

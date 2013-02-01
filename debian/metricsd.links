@@ -1,2 +1,0 @@
-usr/share/metricsd/metricsd.jar usr/bin/metricsd
-lib/init/upstart-job etc/init.d/metricsd
