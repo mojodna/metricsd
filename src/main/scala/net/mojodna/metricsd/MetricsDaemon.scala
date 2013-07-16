@@ -29,11 +29,12 @@ class MetricsDaemon(config: Configuration) extends Logging {
     // restarts
 
     new MetricsServer(
-      config("port").or(MetricsServer.DEFAULT_PORT)
+      config("port").or(MetricsServer.DEFAULT_PORT),
+      config("prefix").or("metricsd")
     ).listen
 
     new ManagementServer(
-      config("management_port").or(ManagementServer.DEFAULT_PORT)
+      config("managementPort").or(config("management_port").or(ManagementServer.DEFAULT_PORT))
     ).listen
   }
 }
@@ -43,7 +44,7 @@ object MetricsDaemon {
     val configFile = Option(System.getenv.get("CONFIG"))
 
     val config = if (configFile == None) {
-      System.err.println("Set CONFIG=/path/to/config to use custom settings.")
+      System.err.println("Set CONFIG=/path/to/config.json to use custom settings.")
       new Configuration(scala.io.Source.fromString("{}"))
     } else {
       new Configuration(configFile.get)

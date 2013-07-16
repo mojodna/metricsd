@@ -14,7 +14,7 @@ import java.net.UnknownHostException
 /**
  * A service handler for :-delimited metrics strings (à la Etsy's statsd).
  */
-class MetricsServiceHandler
+class MetricsServiceHandler(prefix: String)
   extends SimpleChannelUpstreamHandler with Logging {
 
   val COUNTER_METRIC_TYPE = "c"
@@ -96,7 +96,7 @@ class MetricsServiceHandler
             case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
               new MetricName("metrics", "histogram", metricName)
 
-            case METER_METRIC_TYPE =>
+            case METER_METRIC_TYPE | METER_VALUE_METRIC_TYPE =>
               new MetricName("metrics", "meter", metricName)
 
             case METER_VALUE_METRIC_TYPE =>
@@ -128,14 +128,14 @@ class MetricsServiceHandler
               Metrics.newMeter(new MetricName("metrics", "meter", metricName), "samples", TimeUnit.SECONDS).mark()
 
             case METER_VALUE_METRIC_TYPE =>
-              log.debug("Marking meter '%s'", metricName)
+              log.debug("Marking meter '%s' with %d", metricName, value)
               Metrics.newMeter(new MetricName("metrics", "meter", metricName), "samples", TimeUnit.SECONDS).mark(value)
 
             case x: String =>
               log.error("Unknown metric type: %s", x)
           }
 
-          Metrics.newMeter(new MetricName("metricsd."+hostValue, "meter", "samples"), "samples", TimeUnit.SECONDS).mark()
+          Metrics.newMeter(new MetricName(prefix, "meter", "samples"), "samples", TimeUnit.SECONDS).mark()
         }
     }
   }

@@ -205,12 +205,19 @@ Configuration is done by providing the path to a JSON file similar to
         "file": "log/metricsd.log"
     },
     "port": 8125,
-    "management_port": 8126
+    "prefix": "metricsd",
+    "managementPort": 8126
 }
 ```
 
 These are the default values; feel free to omit unchanged values from your
 configuration.
+
+Installing
+==========
+
+Seth is experimenting with maintaining
+a [PPA](https://launchpad.net/~mojodna/+archive/metrics) for Ubuntu packages.
 
 Building
 ========
@@ -230,6 +237,12 @@ To build a packaged JAR containing dependencies:
 ```bash
 $ mvn package
 ```
+
+Packages
+========
+
+Debian packaging lives in a bzr repository on Launchpad:
+[~mojodna/+junk/metricsd-package](https://code.launchpad.net/~mojodna/+junk/metricsd-package)
 
 License
 =======
