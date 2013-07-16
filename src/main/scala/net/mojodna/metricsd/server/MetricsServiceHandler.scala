@@ -14,7 +14,7 @@ import java.net.UnknownHostException
 /**
  * A service handler for :-delimited metrics strings (à la Etsy's statsd).
  */
-class MetricsServiceHandler(prefix: String)
+class MetricsServiceHandler(configPrefix: String)
   extends SimpleChannelUpstreamHandler with Logging {
 
   val COUNTER_METRIC_TYPE = "c"
@@ -25,7 +25,11 @@ class MetricsServiceHandler(prefix: String)
   val TIMER_METRIC_TYPE = "ms"
 
   val MetricMatcher = new Regex("""([^:]+)(:((-?\d+|delete)?(\|((\w+)(\|@(\d+\.\d+))?)?)?)?)?""")
-  var  hostValue="UNKNOWN"
+  var prefix ="metricsd"
+
+  if (configPrefix.equals("<hostname>"))
+  {
+        var  hostValue="UNKNOWN"
  		try
  		{
  			val addr = InetAddress.getLocalHost()
@@ -43,12 +47,18 @@ class MetricsServiceHandler(prefix: String)
  			{
  				hostValue = hostpath( 0 )
  			}
+ 			prefix=hostValue
  		}
  		catch
  		{
  		    case ukh: UnknownHostException =>
  		        log.trace("couldn't find host",ukh)
  		}
+ 	}
+ 	else
+ 	{
+ 	    prefix=configPrefix
+ 	}
 
   override def messageReceived(ctx: ChannelHandlerContext, e: MessageEvent) {
     val msg = e.getMessage.asInstanceOf[String]
