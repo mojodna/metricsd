@@ -103,13 +103,13 @@ class MetricsServiceHandler(configPrefix: String)
             case GAUGE_METRIC_TYPE =>
               new MetricName("metrics", "gauge", metricName)
 
-            case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
+            case HISTOGRAM_METRIC_TYPE  =>
               new MetricName("metrics", "histogram", metricName)
 
-            case METER_METRIC_TYPE | METER_VALUE_METRIC_TYPE =>
-              new MetricName("metrics", "meter", metricName)
+            case TIMER_METRIC_TYPE =>
+              new MetricName("metrics", "timer", metricName)
 
-            case METER_VALUE_METRIC_TYPE =>
+            case METER_METRIC_TYPE | METER_VALUE_METRIC_TYPE =>
               new MetricName("metrics", "meter", metricName)
           }
 
@@ -128,10 +128,15 @@ class MetricsServiceHandler(configPrefix: String)
               counter.clear()
               counter.inc(value)
 
-            case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
+            case HISTOGRAM_METRIC_TYPE  =>
               log.debug("Updating histogram '%s' with %d", metricName, value)
               // note: assumes that values have been normalized to integers
               Metrics.newHistogram(new MetricName("metrics", "histogram", metricName), true).update(value)
+
+            case TIMER_METRIC_TYPE =>
+              log.debug("Updating timer '%s' with %d", metricName, value)
+              // note: assumes that values have been normalized to integers & milliseconds
+              Metrics.newTimer(new MetricName("metrics", "timer", metricName), TimeUnit.MILLISECONDS, TimeUnit.SECONDS).update(value,TimeUnit.MILLISECONDS)
 
             case METER_METRIC_TYPE =>
               log.debug("Marking meter '%s'", metricName)
