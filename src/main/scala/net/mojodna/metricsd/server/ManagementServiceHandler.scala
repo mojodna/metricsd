@@ -13,6 +13,7 @@ class ManagementServiceHandler
   val COUNTERS = "counters"
   val GAUGES = "gauges"
   val HISTOGRAMS = "histograms"
+  val TIMERS = "timers"
   val METERS = "meters"
   val QUIT = "quit"
 
@@ -23,7 +24,7 @@ class ManagementServiceHandler
 
     msg match {
       case HELP =>
-        e.getChannel.write("COMMANDS: counters, gauges, histograms, meters, quit\n\n")
+        e.getChannel.write("COMMANDS: counters, gauges, histograms, timers, meters, quit\n\n")
       case COUNTERS =>
         for((metricName, metric) <- Metrics.defaultRegistry.allMetrics if metricName.getType == "counter") e.getChannel.write(metricName.getName + "\n")
         e.getChannel.write("END\n\n")
@@ -32,6 +33,9 @@ class ManagementServiceHandler
         e.getChannel.write("END\n\n")
       case HISTOGRAMS =>
         for((metricName, metric) <- Metrics.defaultRegistry.allMetrics if metricName.getType == "histogram") e.getChannel.write(metricName.getName + "\n")
+        e.getChannel.write("END\n\n")
+      case TIMERS =>
+        for((metricName, metric) <- Metrics.defaultRegistry.allMetrics if metricName.getType == "timer") e.getChannel.write(metricName.getName + "\n")
         e.getChannel.write("END\n\n")
       case METERS =>
         for((metricName, metric) <- Metrics.defaultRegistry.allMetrics if metricName.getType == "meter") e.getChannel.write(metricName.getName + "\n")

@@ -7,11 +7,14 @@ import com.yammer.metrics.core.MetricName
 import java.util.concurrent.TimeUnit
 import com.yammer.metrics.Metrics
 import util.matching.Regex
+import java.io.IOException
+import java.net.InetAddress
+import java.net.UnknownHostException
 
 /**
  * A service handler for :-delimited metrics strings (à la Etsy's statsd).
  */
-class MetricsServiceHandler(prefix: String)
+class MetricsServiceHandler(configPrefix: String)
   extends SimpleChannelUpstreamHandler with Logging {
 
   val COUNTER_METRIC_TYPE = "c"
@@ -22,6 +25,40 @@ class MetricsServiceHandler(prefix: String)
   val TIMER_METRIC_TYPE = "ms"
 
   val MetricMatcher = new Regex("""([^:]+)(:((-?\d+|delete)?(\|((\w+)(\|@(\d+\.\d+))?)?)?)?)?""")
+  var prefix ="metricsd"
+
+  if (configPrefix.equals("<hostname>"))
+  {
+        var  hostValue="UNKNOWN"
+ 		try
+ 		{
+ 			val addr = InetAddress.getLocalHost()
+
+ 			// Get IP Address
+ 			val ipAddr = addr.getAddress()
+
+ 			// Get hostname
+ 			val hostpath = addr.getHostName().split( "[.]" )
+ 			if ( hostpath.length >= 2 )
+ 			{
+ 				hostValue = hostpath( 1 ) +"."+ hostpath( 0 )
+ 			}
+ 			else
+ 			{
+ 				hostValue = hostpath( 0 )
+ 			}
+ 			prefix=hostValue
+ 		}
+ 		catch
+ 		{
+ 		    case ukh: UnknownHostException =>
+ 		        log.trace("couldn't find host",ukh)
+ 		}
+ 	}
+ 	else
+ 	{
+ 	    prefix=configPrefix
+ 	}
 
   override def messageReceived(ctx: ChannelHandlerContext, e: MessageEvent) {
     val msg = e.getMessage.asInstanceOf[String]
@@ -66,8 +103,11 @@ class MetricsServiceHandler(prefix: String)
             case GAUGE_METRIC_TYPE =>
               new MetricName("metrics", "gauge", metricName)
 
-            case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
+            case HISTOGRAM_METRIC_TYPE  =>
               new MetricName("metrics", "histogram", metricName)
+
+            case TIMER_METRIC_TYPE =>
+              new MetricName("metrics", "timer", metricName)
 
             case METER_METRIC_TYPE | METER_VALUE_METRIC_TYPE =>
               new MetricName("metrics", "meter", metricName)
@@ -88,10 +128,15 @@ class MetricsServiceHandler(prefix: String)
               counter.clear()
               counter.inc(value)
 
-            case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
+            case HISTOGRAM_METRIC_TYPE  =>
               log.debug("Updating histogram '%s' with %d", metricName, value)
               // note: assumes that values have been normalized to integers
               Metrics.newHistogram(new MetricName("metrics", "histogram", metricName), true).update(value)
+
+            case TIMER_METRIC_TYPE =>
+              log.debug("Updating timer '%s' with %d", metricName, value)
+              // note: assumes that values have been normalized to integers & milliseconds
+              Metrics.newTimer(new MetricName("metrics", "timer", metricName), TimeUnit.MILLISECONDS, TimeUnit.SECONDS).update(value,TimeUnit.MILLISECONDS)
 
             case METER_METRIC_TYPE =>
               log.debug("Marking meter '%s'", metricName)

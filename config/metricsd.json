@@ -3,14 +3,14 @@
     "debug": false,
     "graphite": {
         "flushInterval": 10,
-        "host": "localhost",
+        "host": "metrics.prod.cheggnet.com",
         "port": 2003
     },
     "log": {
         "level": "INFO",
-        "file": "log/metricsd.log"
+        "file": "/logs/metricsd.log"
     },
     "port": 8125,
-    "prefix": "metricsd",
+    "prefix": "<hostname>",
     "managementPort": 8126
 }
