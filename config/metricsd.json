@@ -11,6 +11,6 @@
         "file": "log/metricsd.log"
     },
     "port": 8125,
-    "prefix": "metricsd",
+    "prefix": "metrics",
     "managementPort": 8126
 }
