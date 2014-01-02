@@ -61,16 +61,16 @@ class MetricsServiceHandler(prefix: String)
         if (deleteMetric) {
           val name: MetricName = metricType match {
             case COUNTER_METRIC_TYPE =>
-              new MetricName("metrics", "counter", metricName)
+              new MetricName(prefix, "counter", metricName)
 
             case GAUGE_METRIC_TYPE =>
-              new MetricName("metrics", "gauge", metricName)
+              new MetricName(prefix, "gauge", metricName)
 
             case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
-              new MetricName("metrics", "histogram", metricName)
+              new MetricName(prefix, "histogram", metricName)
 
             case METER_METRIC_TYPE | METER_VALUE_METRIC_TYPE =>
-              new MetricName("metrics", "meter", metricName)
+              new MetricName(prefix, "meter", metricName)
           }
 
           log.debug("Deleting metric '%s'", name)
@@ -79,27 +79,27 @@ class MetricsServiceHandler(prefix: String)
           metricType match {
             case COUNTER_METRIC_TYPE =>
               log.debug("Incrementing counter '%s' with %d at sample rate %f (%d)", metricName, value, sampleRate, round(value * 1 / sampleRate))
-              Metrics.newCounter(new MetricName("metrics", "counter", metricName)).inc(round(value * 1 / sampleRate))
+              Metrics.newCounter(new MetricName(prefix, "counter", metricName)).inc(round(value * 1 / sampleRate))
 
             case GAUGE_METRIC_TYPE =>
               log.debug("Updating gauge '%s' with %d", metricName, value)
               // use a counter to simulate a gauge
-              val counter = Metrics.newCounter(new MetricName("metrics", "gauge", metricName))
+              val counter = Metrics.newCounter(new MetricName(prefix, "gauge", metricName))
               counter.clear()
               counter.inc(value)
 
             case HISTOGRAM_METRIC_TYPE | TIMER_METRIC_TYPE =>
               log.debug("Updating histogram '%s' with %d", metricName, value)
               // note: assumes that values have been normalized to integers
-              Metrics.newHistogram(new MetricName("metrics", "histogram", metricName), true).update(value)
+              Metrics.newHistogram(new MetricName(prefix, "histogram", metricName), true).update(value)
 
             case METER_METRIC_TYPE =>
               log.debug("Marking meter '%s'", metricName)
-              Metrics.newMeter(new MetricName("metrics", "meter", metricName), "samples", TimeUnit.SECONDS).mark()
+              Metrics.newMeter(new MetricName(prefix, "meter", metricName), "samples", TimeUnit.SECONDS).mark()
 
             case METER_VALUE_METRIC_TYPE =>
               log.debug("Marking meter '%s' with %d", metricName, value)
-              Metrics.newMeter(new MetricName("metrics", "meter", metricName), "samples", TimeUnit.SECONDS).mark(value)
+              Metrics.newMeter(new MetricName(prefix, "meter", metricName), "samples", TimeUnit.SECONDS).mark(value)
 
             case x: String =>
               log.error("Unknown metric type: %s", x)
